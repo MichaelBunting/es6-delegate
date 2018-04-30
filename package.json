@@ -1,0 +1,9 @@
+{
+  "name": "es6-delegate",
+  "version": "1.0.0",
+  "description": "delegate function built with ES6",
+  "main": "index.js",
+  "repository": "git@github.com:MichaelBunting/es6-delegate.git",
+  "author": "Michael Bunting",
+  "license": "MIT"
+}
