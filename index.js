@@ -57,8 +57,6 @@ var delegate = (function () {
       var _selector$filter = selector.filter(function (node) {
         return node === e.target || node.contains(e.target);
       });
-      // console.dir(selector);
-
 
       var _selector$filter2 = _slicedToArray(_selector$filter, 1);
 

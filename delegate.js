@@ -40,7 +40,6 @@ export default (...delegateArgs) => {
     if (selector.constructor.name === 'String') {
       delegateTarget = e.target.closest(selector);
     } else {
-      // console.dir(selector);
       [delegateTarget] = selector.filter(node => (
         node === e.target || node.contains(e.target)
       ));
