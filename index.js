@@ -5,7 +5,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 /**
  * Function for delegating events from one element to another
  *
- * @param {(String|Node|NodeList)} elements Elements to bind events to
+ * @param {(String|Node|NodeList)} [elements] Elements to bind events to
  * @param {String} eventListeners Space separated list of events to bind
  * @param {(String|Node|NodeList)} selector Element to trigger events
  * @param {Function} callback Callback function
@@ -22,9 +22,13 @@ var delegate = (function () {
   }
 
   if (args[0].constructor.name === 'String') {
-    args[0] = document.querySelectorAll(args[0]);
-  } else if (!args[0].forEach) {
-    args[0] = [args[0]];
+    args[0] = [].concat(_toConsumableArray(document.querySelectorAll(args[0])));
+  } else {
+    if (!args[0].forEach) {
+      args[0] = [args[0]];
+    } else {
+      args[0] = [].concat(_toConsumableArray(args[0]));
+    }
   }
 
   if (args[2].constructor.name !== 'String') {
@@ -45,26 +49,31 @@ var delegate = (function () {
   var events = eventListeners.split(' ');
 
   var callMethod = function callMethod(e) {
+    var delegateTarget = void 0;
+
     if (selector.constructor.name === 'String') {
-      var delegateTarget = e.target.closest(selector);
-
-      if (delegateTarget) {
-        callback.call(delegateTarget, e, delegateTarget);
-      }
+      delegateTarget = e.target.closest(selector);
     } else {
-      var _delegateTarget = selector.filter(function (node) {
+      var _selector$filter = selector.filter(function (node) {
         return node === e.target || node.contains(e.target);
-      })[0];
+      });
+      // console.dir(selector);
 
-      if (_delegateTarget) {
-        callback.call(_delegateTarget, e, _delegateTarget);
-      }
+
+      var _selector$filter2 = _slicedToArray(_selector$filter, 1);
+
+      delegateTarget = _selector$filter2[0];
+    }
+
+    if (delegateTarget) {
+      e.relatedElements = elements;
+      callback.call(delegateTarget, e, delegateTarget);
     }
   };
 
   elements.forEach(function (element) {
     events.forEach(function (event) {
-      element.addEventListener(event, callMethod);
+      element.addEventListener(event, callMethod, true);
     });
   });
 
