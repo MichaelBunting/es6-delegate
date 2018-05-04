@@ -15,12 +15,10 @@ export default (...delegateArgs) => {
 
   if (args[0].constructor.name === 'String') {
     args[0] = [...document.querySelectorAll(args[0])];
+  } else if (!args[0].forEach) {
+    args[0] = [args[0]];
   } else {
-    if (!args[0].forEach) {
-      args[0] = [args[0]];
-    } else {
-      args[0] = [...args[0]];
-    }
+    args[0] = [...args[0]];
   }
 
   if (args[2].constructor.name !== 'String') {

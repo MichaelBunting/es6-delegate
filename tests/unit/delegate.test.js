@@ -1,12 +1,19 @@
+/*
+  global
+    EVENTS
+    trigger
+    targetElement
+    relatedElements
+*/
+
 import 'element-closest';
 
 import HTML from '../mocks/delegate.html';
 import delegate from '../../delegate';
-import { removeListener } from 'cluster';
 
 beforeEach(() => {
   document.body.innerHTML = HTML;
-  
+
   global.EVENTS = {
     click: new Event('click', { bubbles: true }),
     focus: new Event('focus', { bubbles: true }),
@@ -24,10 +31,12 @@ beforeEach(() => {
 
 const removeEvent = (element = document, event, method) => {
   element.removeEventListener(event, method, true);
-}
+};
 
-const setupElementsTest = (elements, events = 'click') => {
+const setupElementsTest = (eles, events = 'click') => {
+  let elements = eles;
   let method;
+
   if (elements) {
     method = delegate(elements, events, '.btn', trigger);
   } else {
@@ -47,7 +56,7 @@ const setupElementsTest = (elements, events = 'click') => {
   });
 
   expect(trigger).toHaveBeenCalledTimes(splitEvents.length);
-  
+
   if (elements && !elements.forEach) elements = [elements];
 
   elements.forEach((element) => {
@@ -59,7 +68,7 @@ const setupElementsTest = (elements, events = 'click') => {
       removeEvent(element, event, method);
     });
   });
-}
+};
 
 describe('when delegating event', () => {
   describe('when passing different types of elements', () => {
@@ -68,19 +77,19 @@ describe('when delegating event', () => {
         setupElementsTest();
       });
     });
-  
+
     describe('when elements is a String', () => {
       it('should bind the event to the node of the selector', () => {
         setupElementsTest('.delegate');
       });
     });
-  
+
     describe('when elements is a Node', () => {
       it('should bind the event to the node passed to it', () => {
         setupElementsTest(document.querySelector('.delegate'));
       });
     });
-  
+
     describe('when elements is a NodeList', () => {
       it('should bind the event to all nodes passed to it', () => {
         setupElementsTest(document.querySelectorAll('.delegate'));
@@ -102,9 +111,11 @@ describe('when delegating event', () => {
         [1, 2, 3, 4, 5].forEach((key) => {
           document.getElementById(`btn${key}`).dispatchEvent(EVENTS.click);
         });
-  
+
         expect(trigger).toHaveBeenCalledTimes(5);
         expect(targetElement.matches('.btn')).toBe(true);
+
+        document.removeEventListener('click', method, true);
       });
     });
 
@@ -113,11 +124,14 @@ describe('when delegating event', () => {
         const method = delegate('click', document.getElementById('btn1'), trigger);
 
         document.getElementById('btn1').dispatchEvent(EVENTS.click);
+        document.getElementById('btn2').dispatchEvent(EVENTS.click);
 
         expect(trigger).toHaveBeenCalledTimes(1);
         expect(targetElement.matches('#btn1')).toBe(true);
         expect(targetElement.matches('#btn2')).toBe(false);
         expect(targetElement.matches('#btn5')).toBe(false);
+
+        document.removeEventListener('click', method, true);
       });
     });
 
@@ -135,6 +149,8 @@ describe('when delegating event', () => {
         });
 
         expect(trigger).toHaveBeenCalledTimes(4);
+
+        document.removeEventListener('click', method, true);
       });
     });
   });
