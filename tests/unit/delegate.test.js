@@ -42,7 +42,7 @@ const setupElementsTest = (eles, events = 'click') => {
   } else {
     method = delegate(events, '.btn', trigger);
 
-    elements = document;
+    elements = document.documentElement;
   }
 
   if (elements && elements.constructor.name === 'String') {
@@ -115,7 +115,7 @@ describe('when delegating event', () => {
         expect(trigger).toHaveBeenCalledTimes(5);
         expect(targetElement.matches('.btn')).toBe(true);
 
-        document.removeEventListener('click', method, true);
+        document.documentElement.removeEventListener('click', method, true);
       });
     });
 
@@ -131,7 +131,7 @@ describe('when delegating event', () => {
         expect(targetElement.matches('#btn2')).toBe(false);
         expect(targetElement.matches('#btn5')).toBe(false);
 
-        document.removeEventListener('click', method, true);
+        document.documentElement.removeEventListener('click', method, true);
       });
     });
 
@@ -150,7 +150,7 @@ describe('when delegating event', () => {
 
         expect(trigger).toHaveBeenCalledTimes(4);
 
-        document.removeEventListener('click', method, true);
+        document.documentElement.removeEventListener('click', method, true);
       });
     });
   });
