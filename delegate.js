@@ -10,7 +10,7 @@ export default (...delegateArgs) => {
   let args = delegateArgs;
 
   if (args.length === 3) {
-    args = [[document], ...args];
+    args = [[document.documentElement], ...args];
   }
 
   if (args[0].constructor.name === 'String') {

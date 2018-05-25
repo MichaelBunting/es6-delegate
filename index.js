@@ -18,7 +18,7 @@ var delegate = (function () {
   var args = delegateArgs;
 
   if (args.length === 3) {
-    args = [[document]].concat(_toConsumableArray(args));
+    args = [[document.documentElement]].concat(_toConsumableArray(args));
   }
 
   if (args[0].constructor.name === 'String') {
