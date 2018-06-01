@@ -1,6 +1,6 @@
 {
   "name": "es6-delegate",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Delegate function built with ES6",
   "browser": "index.js",
   "repository": {
