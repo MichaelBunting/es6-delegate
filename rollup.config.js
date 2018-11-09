@@ -4,7 +4,7 @@ export default {
   input: 'delegate.js',
   output: {
     file: 'index.js',
-    format: 'es',
+    format: 'cjs',
   },
   plugins: [
     babel({
